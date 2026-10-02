@@ -1,0 +1,260 @@
+-- Justru Script Hub Script Template with Draggable Toggle & Multiple Categories
+-- Made by reylove
+
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local player = Players.LocalPlayer
+
+-- ScreenGui Setup
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "JustruScriptHubGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = CoreGui
+
+-- Floating Draggable Toggle Icon (To open/close the main UI)
+local toggleIcon = Instance.new("TextButton")
+toggleIcon.Name = "ToggleIcon"
+toggleIcon.Size = UDim2.new(0, 45, 0, 45)
+toggleIcon.Position = UDim2.new(0, 20, 0.5, -70)
+toggleIcon.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+toggleIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleIcon.TextSize = 14
+toggleIcon.Font = Enum.Font.GothamBold
+toggleIcon.Text = "J"
+toggleIcon.Active = true
+toggleIcon.Draggable = true
+toggleIcon.Parent = screenGui
+
+local iconCorner = Instance.new("UICorner")
+iconCorner.CornerRadius = UDim.new(0, 8)
+iconCorner.Parent = toggleIcon
+
+-- Main Frame (Script Hub Window)
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 400, 0, 740)
+mainFrame.Position = UDim2.new(0.5, -200, 0.5, -370)
+mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Visible = true
+mainFrame.Parent = screenGui
+
+local mainCorner = Instance.new("UICorner")
+mainCorner.CornerRadius = UDim.new(0, 8)
+mainCorner.Parent = mainFrame
+
+-- Top Bar
+local topBar = Instance.new("Frame")
+topBar.Size = UDim2.new(1, 0, 0, 65)
+topBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+topBar.BorderSizePixel = 0
+topBar.Parent = mainFrame
+
+local topCorner = Instance.new("UICorner")
+topCorner.CornerRadius = UDim.new(0, 8)
+topCorner.Parent = topBar
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, -20, 0, 20)
+titleLabel.Position = UDim2.new(0, 10, 0, 4)
+titleLabel.BackgroundTransparency = 1
+titleLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+titleLabel.TextSize = 14
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+titleLabel.Text = "Justru Script Hub"
+titleLabel.Parent = topBar
+
+local creditLabel = Instance.new("TextLabel")
+creditLabel.Size = UDim2.new(1, -20, 0, 15)
+creditLabel.Position = UDim2.new(0, 10, 0, 24)
+creditLabel.BackgroundTransparency = 1
+creditLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+creditLabel.TextSize = 11
+creditLabel.Font = Enum.Font.GothamMedium
+creditLabel.TextXAlignment = Enum.TextXAlignment.Left
+creditLabel.Text = "Made by reylove"
+creditLabel.Parent = topBar
+
+-- Content Scrolling Frame
+local contentScroll = Instance.new("ScrollingFrame")
+contentScroll.Size = UDim2.new(1, -20, 1, -75)
+contentScroll.Position = UDim2.new(0, 10, 0, 65)
+contentScroll.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+contentScroll.BorderSizePixel = 0
+contentScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+contentScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+contentScroll.ScrollBarThickness = 4
+contentScroll.Parent = mainFrame
+
+local scrollCorner = Instance.new("UICorner")
+scrollCorner.CornerRadius = UDim.new(0, 6)
+scrollCorner.Parent = contentScroll
+
+local uiListLayout = Instance.new("UIListLayout")
+uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+uiListLayout.Padding = UDim.new(0, 8)
+uiListLayout.Parent = contentScroll
+
+local function addScriptButton(name, urlOrFunc)
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(1, 0, 0, 35)
+	btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	btn.TextSize = 13
+	btn.Font = Enum.Font.GothamMedium
+	btn.Text = name
+	btn.Parent = contentScroll
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 6)
+	corner.Parent = btn
+
+	btn.MouseButton1Click:Connect(function()
+		local success, err = pcall(function()
+			if type(urlOrFunc) == "function" then
+				urlOrFunc()
+			else
+				loadstring(game:HttpGet(urlOrFunc))()
+			end
+		end)
+		if not success then
+			warn("[Justru Script Hub Error]: " .. tostring(err))
+		end
+	end)
+end
+
+-- ==================== CATEGORY 1: Jujutsu Shenanigan ====================
+local jjCategoryLabel = Instance.new("TextLabel")
+jjCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+jjCategoryLabel.BackgroundTransparency = 1
+jjCategoryLabel.TextColor3 = Color3.fromRGB(150, 150, 255)
+jjCategoryLabel.TextSize = 13
+jjCategoryLabel.Font = Enum.Font.GothamBold
+jjCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+jjCategoryLabel.Text = "  --- Jujutsu Shenanigan ---"
+jjCategoryLabel.Parent = contentScroll
+
+addScriptButton("Jujutsu Shenanigans TBO", "https://rawscripts.net/raw/Jujutsu-Shenanigans-T-196379")
+addScriptButton("JujutsuerV2", "https://rawscripts.net/raw/HEAD-OF-HEI-Jujutsu-Shenanigans-JujutsuerV2-92468")
+
+-- ==================== CATEGORY 2: Break in 2 ====================
+local breakInCategoryLabel = Instance.new("TextLabel")
+breakInCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+breakInCategoryLabel.BackgroundTransparency = 1
+breakInCategoryLabel.TextColor3 = Color3.fromRGB(255, 150, 150)
+breakInCategoryLabel.TextSize = 13
+breakInCategoryLabel.Font = Enum.Font.GothamBold
+breakInCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+breakInCategoryLabel.Text = "  --- Break in 2 ---"
+breakInCategoryLabel.Parent = contentScroll
+
+addScriptButton("Break in 2 Script", "https://raw.githubusercontent.com/RScriptz/RobloxScripts/main/BreakIn2.lua")
+
+-- ==================== CATEGORY 3: Steal an egg ====================
+local stealEggCategoryLabel = Instance.new("TextLabel")
+stealEggCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+stealEggCategoryLabel.BackgroundTransparency = 1
+stealEggCategoryLabel.TextColor3 = Color3.fromRGB(255, 220, 100)
+stealEggCategoryLabel.TextSize = 13
+stealEggCategoryLabel.Font = Enum.Font.GothamBold
+stealEggCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+stealEggCategoryLabel.Text = "  --- Steal an egg ---"
+stealEggCategoryLabel.Parent = contentScroll
+
+addScriptButton("CLOUT HUB", "https://raw.githubusercontent.com/ClouthubOnTop/Loader/main/main.lua")
+addScriptButton("FOXNAME HUB", "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua")
+addScriptButton("OXIDE HUB", "https://pastefy.app/aIzaPmW9/raw")
+addScriptButton("VALINC HUB", "https://api.valincsyndicate.com/v1/releases/5502cba03703f4a3628d522d396b80d8.lua")
+addScriptButton("NEVA HUB", "https://raw.githubusercontent.com/VEZ2/NEVAHUB/main/2")
+addScriptButton("BK HUB", "https://api.luarmor.net/files/v4/loaders/9ee4edde227ac85f50872bf9e4226508.lua")
+addScriptButton("BLYXO HUB", "https://flowauth.net/v1/loaders/69d3463240384f3a73fbe32c178093a2.lua")
+addScriptButton("ZERO POINT HUB", "https://raw.githubusercontent.com/JaxRol/ZeroPoint/refs/heads/main/KeySystem")
+addScriptButton("UB HUB", "https://raw.githubusercontent.com/TeamUBHub/UBLoader/refs/heads/main/Loader.lua")
+
+-- ==================== CATEGORY 4: 99 Nights In The Forest ====================
+local forestCategoryLabel = Instance.new("TextLabel")
+forestCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+forestCategoryLabel.BackgroundTransparency = 1
+forestCategoryLabel.TextColor3 = Color3.fromRGB(100, 255, 200)
+forestCategoryLabel.TextSize = 13
+forestCategoryLabel.Font = Enum.Font.GothamBold
+forestCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+forestCategoryLabel.Text = "  --- 99 Nights In The Forest ---"
+forestCategoryLabel.Parent = contentScroll
+
+addScriptButton("Voidware", "https://rawscripts.net/raw/99-Nights-in-the-Forest-SNOW-BIOME-KEYLESS-BEST-99-NIGHTS-IN-THE-FOREST-SCRIPT-VOIDWARE-47274")
+
+-- ==================== CATEGORY 5: Forsaken ====================
+local forsakenCategoryLabel = Instance.new("TextLabel")
+forsakenCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+forsakenCategoryLabel.BackgroundTransparency = 1
+forsakenCategoryLabel.TextColor3 = Color3.fromRGB(255, 100, 255)
+forsakenCategoryLabel.TextSize = 13
+forsakenCategoryLabel.Font = Enum.Font.GothamBold
+forsakenCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+forsakenCategoryLabel.Text = "  --- Forsaken ---"
+forsakenCategoryLabel.Parent = contentScroll
+
+addScriptButton("ForsakenPlus", "https://rawscripts.net/raw/Forsaken-Plus-216770")
+
+-- ==================== CATEGORY 6: Violence District ====================
+local violenceCategoryLabel = Instance.new("TextLabel")
+violenceCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+violenceCategoryLabel.BackgroundTransparency = 1
+violenceCategoryLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+violenceCategoryLabel.TextSize = 13
+violenceCategoryLabel.Font = Enum.Font.GothamBold
+violenceCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+violenceCategoryLabel.Text = "  --- Violence District ---"
+violenceCategoryLabel.Parent = contentScroll
+
+addScriptButton("6locc", "https://rawscripts.net/raw/CURE-Violence-District-6locc-Script-234994")
+
+-- ==================== CATEGORY 7: Dandy's world ====================
+local dandyCategoryLabel = Instance.new("TextLabel")
+dandyCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+dandyCategoryLabel.BackgroundTransparency = 1
+dandyCategoryLabel.TextColor3 = Color3.fromRGB(255, 160, 50)
+dandyCategoryLabel.TextSize = 13
+dandyCategoryLabel.Font = Enum.Font.GothamBold
+dandyCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+dandyCategoryLabel.Text = "  --- Dandy's world ---"
+dandyCategoryLabel.Parent = contentScroll
+
+addScriptButton("Noxious", "https://rawscripts.net/raw/Dandy's-World-ALPHA-Team-Noxious-or-Boxten-GUI-BSGUI-228222")
+
+-- ==================== CATEGORY 8: Ride a Pet ====================
+local ridePetCategoryLabel = Instance.new("TextLabel")
+ridePetCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+ridePetCategoryLabel.BackgroundTransparency = 1
+ridePetCategoryLabel.TextColor3 = Color3.fromRGB(80, 220, 255)
+ridePetCategoryLabel.TextSize = 13
+ridePetCategoryLabel.Font = Enum.Font.GothamBold
+ridePetCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+ridePetCategoryLabel.Text = "  --- Ride a Pet ---"
+ridePetCategoryLabel.Parent = contentScroll
+
+addScriptButton("Lumin", "https://rawscripts.net/raw/Ride-A-Pet-Lumin-Hub-or-Keyless-228988")
+
+-- ==================== CATEGORY 9: Rival's ====================
+local rivalsCategoryLabel = Instance.new("TextLabel")
+rivalsCategoryLabel.Size = UDim2.new(1, 0, 0, 25)
+rivalsCategoryLabel.BackgroundTransparency = 1
+rivalsCategoryLabel.TextColor3 = Color3.fromRGB(200, 100, 255)
+rivalsCategoryLabel.TextSize = 13
+rivalsCategoryLabel.Font = Enum.Font.GothamBold
+rivalsCategoryLabel.TextXAlignment = Enum.TextXAlignment.Left
+rivalsCategoryLabel.Text = "  --- Rival's ---"
+rivalsCategoryLabel.Parent = contentScroll
+
+addScriptButton("Korax", "https://rawscripts.net/raw/RIVALS-Korax-226484")
+
+-- Toggle Open/Close Functionality for the Main Hub Window
+toggleIcon.MouseButton1Click:Connect(function()
+	mainFrame.Visible = not mainFrame.Visible
+end)
+
+print("Justru Script Hub Loaded Successfully! Made by reylove")
